@@ -71,6 +71,20 @@
 
 			background-color: rgba(0,51,102,.5);
 		}
+
+		#bookmarkletLink {
+			position: absolute;
+			display: none;
+			top: 10px;
+			left: 10px;
+			padding: 10px;
+
+			background-color: red;
+			color: white;
+			text-decoration: none;
+			text-align: center;
+			font-size: 18px;
+		}
 	</style>
 	<script>
 		_flakeCount = 500;
@@ -81,6 +95,9 @@
 		function start() {
 			var overlay = document.getElementById('overlay');
 			overlay.style.display = 'none';
+
+			var link = document.getElementById('bookmarkletLink');
+			link.style.display = 'block';
 
 			createFlakes(_flakeCount);
 		}
@@ -116,5 +133,64 @@
 		<button onClick="start()">LET IT SNOW</button>
 	</div>
 	<div id="ground"></div>
+	<a id="bookmarkletLink" href="javascript:(function() {
+		_flakeCount = 500;
+		_maxFallDuration = 10;
+		_minFallDuration = 4;
+		_maxFallDelay = 5;
+
+		document.body.style.position = 'relative';
+
+		addKeyframesStyle();
+		createFlakes(_flakeCount);
+
+		function addKeyframesStyle() {
+				var styles = document.createElement('style');
+				styles.type = 'text/css';
+				styles.innerHTML = '@keyframes snowfall {from {top: 0;} to {top: 100%;}}';
+				document.getElementsByTagName('head')[0].appendChild(styles);
+		}
+
+		function createFlakes(flakeCount) {
+			for(var i = 0; i < flakeCount; i++) {
+				var flake = document.createElement('div');
+				applyFlakeStyles(flake);
+				document.body.appendChild(flake);
+			}
+		}
+
+		function applyFlakeStyles(flake) {
+			flake.style.position = 'absolute';
+			flake.style.width = '3px';
+			flake.style.height = '3px';
+			flake.style.top = '-3px';
+			flake.style.left = getRandomLeftPosition();
+			flake.style.zIndex = '99';
+			
+			flake.style.backgroundColor = 'white';
+			flake.style.border = 'solid';
+			flake.style.borderColor = '#C7C7C7';
+			flake.style.borderRadius = '50%';
+			flake.style.borderWidth = '1px';
+
+			flake.style.animationName = 'snowfall';
+			flake.style.animationDuration = getRandomFallDuration();
+			flake.style.animationDelay = getRandomFallDelay();
+			flake.style.animationIterationCount = 'infinite';
+			flake.style.animationTimingFunction = 'linear';
+		}
+
+		function getRandomLeftPosition() {
+		  return (Math.random() * window.innerWidth) + 'px';
+		}
+
+		function getRandomFallDuration() {
+			return (Math.floor(Math.random() * (_maxFallDuration - _minFallDuration)) + _minFallDuration) + 's';
+		}
+
+		function getRandomFallDelay() {
+			return (Math.random() * _maxFallDelay) + 's';
+		}
+	})()">Bookmarklet</a>
 </body>
 </html>
