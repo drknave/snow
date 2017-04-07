@@ -51,7 +51,7 @@
 
 		@keyframes snowfall {
 			from {top: 0;}
-			to {top: 100%;}
+			to {top: calc(100% - 3px);}
 		}
 
 		#ground {
@@ -88,9 +88,9 @@
 	</style>
 	<script>
 		_flakeCount = 500;
+		_maxFallDelay = 5;
 		_maxFallDuration = 10;
 		_minFallDuration = 4;
-		_maxFallDelay = 5;
 
 		function start() {
 			var overlay = document.getElementById('overlay');
@@ -99,7 +99,16 @@
 			var link = document.getElementById('bookmarkletLink');
 			link.style.display = 'block';
 
+			setAnimationFactors();
 			createFlakes(_flakeCount);
+		}
+
+		function setAnimationFactors() {
+			var heightFactor = document.body.scrollHeight/window.innerHeight;
+			_flakeCount = heightFactor * 500;
+			_maxFallDuration = heightFactor * 10;
+			_minFallDuration = heightFactor * 4;
+			_maxFallDelay = heightFactor * 5;
 		}
 
 		function createFlakes(flakeCount) {
@@ -142,6 +151,7 @@
 		document.body.style.position = 'relative';
 
 		addKeyframesStyle();
+		setAnimationFactors();
 		createFlakes(_flakeCount);
 
 		function addKeyframesStyle() {
@@ -151,6 +161,14 @@
 				document.getElementsByTagName('head')[0].appendChild(styles);
 		}
 
+		function setAnimationFactors() {
+			var heightFactor = document.body.scrollHeight/window.innerHeight;
+			_flakeCount = heightFactor * 500;
+			_maxFallDuration = heightFactor * 10;
+			_minFallDuration = heightFactor * 4;
+			_maxFallDelay = heightFactor * 5;
+		}
+		
 		function createFlakes(flakeCount) {
 			for(var i = 0; i < flakeCount; i++) {
 				var flake = document.createElement('div');

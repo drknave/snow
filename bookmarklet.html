@@ -12,7 +12,7 @@
 	function addKeyframesStyle() {
 			var styles = document.createElement('style');
 			styles.type = 'text/css';
-			styles.innerHTML = '@keyframes snowfall {from {top: 0;} to {top: 100%;}}';
+			styles.innerHTML = '@keyframes snowfall {from {top: 0;} to {top: calc(100% - 3px);}}';
 			document.getElementsByTagName('head')[0].appendChild(styles);
 	}
 
@@ -50,10 +50,16 @@
 	}
 
 	function getRandomFallDuration() {
+		setAnimationFactors();
 		return (Math.floor(Math.random() * (_maxFallDuration - _minFallDuration)) + _minFallDuration) + 's';
 	}
 
 	function getRandomFallDelay() {
 		return (Math.random() * _maxFallDelay) + 's';
+	}
+
+	function setAnimationFactors() {
+		_maxFallDuration = (document.body.scrollHeight/window.innerHeight) * 10;
+		_minFallDuration = (document.body.scrollHeight/window.innerHeight) * 4;
 	}
 })()">Snow bookmarklet</a>
